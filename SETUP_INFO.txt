@@ -1,0 +1,120 @@
+<!-- FILE UNTUK MENAMBAHKAN CUSTOM CSS/JS JIKA DIPERLUKAN -->
+
+<!-- 
+    INSTRUKSI CUSTOMIZATION UNTUK DEVELOPER:
+    
+    1. MENGUBAH WARNA THEME:
+       - Edit di resources/views/layouts/app.blade.php
+       - Cari section <style>
+       - Ubah warna hex sesuai kebutuhan
+    
+    2. MENGUBAH LOGO:
+       - Ganti icon di header: <i class="fas fa-graduation-cap"></i>
+       - Atau upload gambar dan ganti dengan <img src="/images/logo.png">
+    
+    3. MENAMBAHKAN FIELD BARU:
+       - Edit migration di database/migrations
+       - Jalankan: php artisan make:migration add_field_to_guest_books_table
+       - Update model di app/Models/GuestBook.php (tambah ke fillable)
+       - Update views (create.blade.php dan index.blade.php)
+       - Update controller jika diperlukan
+       - Jalankan: php artisan migrate
+    
+    4. MENAMBAHKAN FITUR LOGIN:
+       - Jalankan: php artisan make:auth
+       - Atau install: composer require laravel/breeze
+       - Update controller untuk add middleware
+       - Update routes/web.php
+    
+    5. DATABASE COMMANDS:
+       - Lihat data: php artisan tinker
+       - Backup: mysqldump -u root buku_tamu > backup.sql
+       - Restore: mysql -u root buku_tamu < backup.sql
+-->
+
+SETUP BERHASIL! APLIKASI SIAP DIGUNAKAN.
+
+QUICK START:
+============
+1. Pastikan MySQL sudah running
+2. Jalankan: php artisan serve
+3. Buka: http://127.0.0.1:8000
+4. Mulai menggunakan aplikasi!
+
+STRUKTUR DATABASE:
+===================
+Table: guest_books
+- id (PK)
+- kecamatan (string)
+- nama_pengambil (string)
+- nama_tk_kb (string)
+- tanda_tangan (longText - base64 image data)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+DAFTAR KECAMATAN (DEFAULT):
+============================
+1. Kecamatan 1
+2. Kecamatan 2
+3. Kecamatan 3
+4. Kecamatan 4
+5. Kecamatan 5
+6. Kecamatan 6
+7. Kecamatan 7
+8. Kecamatan 8
+
+Edit di: app/Helpers/GuestBookHelper.php
+
+FITUR YANG TERSEDIA:
+====================
+✓ Input data dengan form
+✓ Tanda tangan digital (canvas-based)
+✓ Penyimpanan ke MySQL
+✓ Tampilan data dalam tabel
+✓ Pencarian & filter data
+✓ Export ke PDF
+✓ Export ke Excel/CSV
+✓ Responsive design
+✓ Mobile-friendly
+✓ Theme warna biru muda
+✓ Header dengan logo
+✓ Footer dengan copyright
+✓ Notifikasi sukses
+✓ Pagination
+
+DEVELOPMENT NOTES:
+==================
+- Framework: Laravel 12
+- PHP Version: 8.2+
+- Database: MySQL 5.7+
+- Node Package Manager: Optional (tidak wajib)
+- Frontend: Bootstrap 5 + Font Awesome 6
+
+UNTUK PRODUCTION:
+=================
+1. Set APP_DEBUG=false di .env
+2. Set APP_ENV=production
+3. Jalankan: php artisan config:cache
+4. Jalankan: php artisan route:cache
+5. Setup HTTPS dengan SSL certificate
+6. Gunakan production-grade web server (Nginx/Apache)
+7. Setup backup database secara berkala
+
+TROUBLESHOOTING:
+================
+Q: Port 8000 sudah digunakan
+A: Gunakan: php artisan serve --port 8001
+
+Q: Migration error
+A: Pastikan:
+   - MySQL service berjalan
+   - .env DB config benar
+   - Database sudah dibuat
+
+Q: Signature pad tidak berfungsi
+A: Pastikan:
+   - Browser support HTML5 Canvas
+   - JavaScript enabled
+   - Coba di browser lain
+
+Untuk bantuan lebih lanjut, lihat README_ID.md
