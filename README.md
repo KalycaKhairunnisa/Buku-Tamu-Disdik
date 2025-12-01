@@ -127,14 +127,17 @@ erDiagram
         string email UNIQUE
         string password
         enum role
-        timestamps
+        timestamp email_verified_at
+        timestamp created_at
+        timestamp updated_at
     }
 
     KECAMATAN {
         bigint id PK
         string nama UNIQUE
         text keterangan
-        timestamps
+        timestamp created_at
+        timestamp updated_at
     }
 
     GUEST_BOOKS {
@@ -144,7 +147,8 @@ erDiagram
         string nama_pengambil
         string nama_tk_kb
         longtext tanda_tangan
-        timestamps
+        timestamp created_at
+        timestamp updated_at
     }
 ```
 
