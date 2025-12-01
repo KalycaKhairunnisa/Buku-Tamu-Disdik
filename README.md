@@ -118,15 +118,15 @@ routes/web.php
 ### Entity Relationship Diagram (ERD)
 ```mermaid
 erDiagram
-    USERS ||--o{ GUEST_BOOKS : "mencatat"
-    KECAMATAN ||--o{ GUEST_BOOKS : "memiliki"
+    USERS ||--o{ GUEST_BOOKS : mencatat
+    KECAMATAN ||--o{ GUEST_BOOKS : memiliki
 
     USERS {
         bigint id PK
         string name
         string email UNIQUE
         string password
-        enum role
+        string role
         datetime email_verified_at
         datetime created_at
         datetime updated_at
