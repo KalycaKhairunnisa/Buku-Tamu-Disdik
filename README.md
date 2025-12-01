@@ -116,41 +116,10 @@ routes/web.php
 
 ## Diagram & Arsitektur
 ### Entity Relationship Diagram (ERD)
-```mermaid
-erDiagram
-    USERS ||--o{ GUEST_BOOKS : mencatat
-    KECAMATAN ||--o{ GUEST_BOOKS : memiliki
 
-    USERS {
-        bigint id PK
-        string name
-        string email UNIQUE
-        string password
-        string role
-        datetime email_verified_at
-        datetime created_at
-        datetime updated_at
-    }
+If you prefer a rendered image, place `erdplus.png` at the repository root and it will be displayed below.
 
-    KECAMATAN {
-        bigint id PK
-        string nama UNIQUE
-        text keterangan
-        datetime created_at
-        datetime updated_at
-    }
-
-    GUEST_BOOKS {
-        bigint id PK
-        bigint user_id FK
-        bigint kecamatan_id FK
-        string nama_pengambil
-        string nama_tk_kb
-        longtext tanda_tangan
-        datetime created_at
-        datetime updated_at
-    }
-```
+![ERD diagram](erdplus.png)
 
 ### UML Class Diagram (Ringkas)
 ```mermaid
