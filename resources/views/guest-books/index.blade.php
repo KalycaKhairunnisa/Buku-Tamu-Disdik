@@ -181,8 +181,8 @@
                     <select name="kecamatan" class="form-select">
                         <option value="">-- Semua Kecamatan --</option>
                         @foreach ($kecamatan as $item)
-                            <option value="{{ $item }}" {{ request('kecamatan') == $item ? 'selected' : '' }}>
-                                {{ $item }}
+                            <option value="{{ $item->id }}" {{ (string)request('kecamatan') === (string)$item->id ? 'selected' : '' }}>
+                                {{ $item->nama }}
                             </option>
                         @endforeach
                     </select>
@@ -190,13 +190,13 @@
 
                 <div>
                     <label class="form-label">Nama Pengambil</label>
-                    <input type="text" name="nama_pengambil" class="form-control" 
+                    <input type="text" name="nama_pengambil" class="form-control"
                            placeholder="Cari nama..." value="{{ request('nama_pengambil') }}">
                 </div>
 
                 <div>
                     <label class="form-label">Nama TK/KB</label>
-                    <input type="text" name="nama_tk_kb" class="form-control" 
+                    <input type="text" name="nama_tk_kb" class="form-control"
                            placeholder="Cari TK/KB..." value="{{ request('nama_tk_kb') }}">
                 </div>
 
@@ -222,6 +222,7 @@
                         <th><i class="fas fa-map-pin"></i> Kecamatan</th>
                         <th><i class="fas fa-user"></i> Nama Pengambil</th>
                         <th><i class="fas fa-school"></i> Nama TK/KB</th>
+                        <th><i class="fas fa-user"></i> Pembuat</th>
                         <th><i class="fas fa-calendar"></i> Tanggal</th>
                         <th width="100"><i class="fas fa-pen-fancy"></i> Tanda Tangan</th>
                     </tr>
@@ -234,17 +235,18 @@
                             </td>
                             <td>
                                 <span class="badge badge-info">
-                                    {{ $book->kecamatan }}
+                                    {{ $book->kecamatan?->nama ?? '-' }}
                                 </span>
                             </td>
                             <td>{{ $book->nama_pengambil }}</td>
                             <td>{{ $book->nama_tk_kb }}</td>
+                            <td>{{ $book->user?->name ?? 'Unknown' }}</td>
                             <td>
                                 <small>{{ $book->created_at->format('d-m-Y H:i') }}</small>
                             </td>
                             <td>
                                 @if ($book->tanda_tangan)
-                                    <button class="btn btn-sm btn-outline-primary" type="button" 
+                                    <button class="btn btn-sm btn-outline-primary" type="button"
                                             data-bs-toggle="modal" data-bs-target="#signatureModal{{ $book->id }}">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -260,7 +262,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                 </div>
                                                 <div class="modal-body text-center" style="background-color: #f0f8ff;">
-                                                    <img src="{{ $book->tanda_tangan }}" alt="Signature" 
+                                                    <img src="{{ $book->tanda_tangan }}" alt="Signature"
                                                          style="max-width: 100%; height: auto; border: 2px solid #ADD8E6; border-radius: 10px;">
                                                 </div>
                                             </div>

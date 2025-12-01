@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
         // Create users first
         $this->call(UserSeeder::class);
 
+        // Seed kecamatan data
+        $this->call(KecamatanSeeder::class);
+
         // Create sample guest book data
         GuestBook::factory(15)->create();
     }

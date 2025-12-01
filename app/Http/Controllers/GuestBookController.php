@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\GuestBook;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GuestBookController extends Controller
 {
@@ -13,7 +15,7 @@ class GuestBookController extends Controller
 
         // Filter berdasarkan kecamatan
         if ($request->filled('kecamatan')) {
-            $query->where('kecamatan', $request->kecamatan);
+            $query->where('kecamatan_id', $request->kecamatan);
         }
 
         // Filter berdasarkan nama pengambil
@@ -26,28 +28,30 @@ class GuestBookController extends Controller
             $query->where('nama_tk_kb', 'like', '%' . $request->nama_tk_kb . '%');
         }
 
-        $guestBooks = $query->latest()->paginate(10);
-        $kecamatan = $this->getKecamatan();
+        $guestBooks = $query->with(['kecamatan','user'])->latest()->paginate(10);
+        $kecamatan = Kecamatan::orderBy('nama')->get();
 
         return view('guest-books.index', compact('guestBooks', 'kecamatan'));
     }
 
     public function create()
     {
-        $kecamatan = $this->getKecamatan();
+        $kecamatan = Kecamatan::orderBy('nama')->get();
         return view('guest-books.create', compact('kecamatan'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'kecamatan' => 'required|string',
+            'kecamatan_id' => 'required|exists:kecamatan,id',
             'nama_pengambil' => 'required|string|max:255',
             'nama_tk_kb' => 'required|string|max:255',
             'tanda_tangan' => 'required|string',
         ]);
 
-        GuestBook::create($validated);
+        $data = array_merge($validated, ['user_id' => Auth::id()]);
+
+        GuestBook::create($data);
 
         return redirect()->route('guest-books.index')->with('success', 'Data berhasil disimpan. Terima kasih.');
     }
@@ -57,7 +61,7 @@ class GuestBookController extends Controller
         $query = GuestBook::query();
 
         if ($request->filled('kecamatan')) {
-            $query->where('kecamatan', $request->kecamatan);
+            $query->where('kecamatan_id', $request->kecamatan);
         }
 
         if ($request->filled('nama_pengambil')) {
@@ -68,11 +72,11 @@ class GuestBookController extends Controller
             $query->where('nama_tk_kb', 'like', '%' . $request->nama_tk_kb . '%');
         }
 
-        $guestBooks = $query->latest()->get();
+        $guestBooks = $query->with(['kecamatan','user'])->latest()->get();
 
         // Generate simple HTML response for PDF
         $html = $this->generatePdfContent($guestBooks);
-        
+
         return response($html)
             ->header('Content-Type', 'text/html; charset=utf-8')
             ->header('Content-Disposition', 'attachment; filename="buku-tamu-' . date('Y-m-d') . '.html"');
@@ -83,7 +87,7 @@ class GuestBookController extends Controller
         $query = GuestBook::query();
 
         if ($request->filled('kecamatan')) {
-            $query->where('kecamatan', $request->kecamatan);
+            $query->where('kecamatan_id', $request->kecamatan);
         }
 
         if ($request->filled('nama_pengambil')) {
@@ -94,11 +98,11 @@ class GuestBookController extends Controller
             $query->where('nama_tk_kb', 'like', '%' . $request->nama_tk_kb . '%');
         }
 
-        $guestBooks = $query->latest()->get();
+        $guestBooks = $query->with(['kecamatan','user'])->latest()->get();
 
         // Generate CSV content
         $csv = $this->generateCsvContent($guestBooks);
-        
+
         return response($csv)
             ->header('Content-Type', 'text/csv; charset=utf-8')
             ->header('Content-Disposition', 'attachment; filename="buku-tamu-' . date('Y-m-d') . '.csv"');
@@ -106,7 +110,7 @@ class GuestBookController extends Controller
 
     private function getKecamatan()
     {
-        return getKecamatan();
+        return Kecamatan::orderBy('nama')->get();
     }
 
     private function generatePdfContent($guestBooks)
@@ -140,9 +144,10 @@ class GuestBookController extends Controller
         <tbody>';
 
         foreach ($guestBooks as $index => $book) {
+            $kecamatanName = $book->kecamatan?->nama ?? $book->kecamatan_id ?? '-';
             $html .= '<tr>
                 <td>' . ($index + 1) . '</td>
-                <td>' . $book->kecamatan . '</td>
+                <td>' . $kecamatanName . '</td>
                 <td>' . $book->nama_pengambil . '</td>
                 <td>' . $book->nama_tk_kb . '</td>
                 <td>' . $book->created_at->format('d-m-Y H:i') . '</td>
@@ -162,8 +167,9 @@ class GuestBookController extends Controller
         $csv = "No.,Kecamatan,Nama Pengambil,Nama TK/KB,Tanggal\n";
 
         foreach ($guestBooks as $index => $book) {
-            $csv .= ($index + 1) . ',' 
-                . '"' . addslashes($book->kecamatan) . '",'
+            $kecamatanName = $book->kecamatan?->nama ?? $book->kecamatan_id ?? '-';
+            $csv .= ($index + 1) . ','
+                . '"' . addslashes($kecamatanName) . '",'
                 . '"' . addslashes($book->nama_pengambil) . '",'
                 . '"' . addslashes($book->nama_tk_kb) . '",'
                 . '"' . $book->created_at->format('d-m-Y H:i') . '"' . "\n";

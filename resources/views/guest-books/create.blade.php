@@ -105,18 +105,18 @@
 
                 <!-- Kecamatan -->
                 <div class="form-group">
-                    <label for="kecamatan" class="form-label">
+                    <label for="kecamatan_id" class="form-label">
                         <i class="fas fa-map-pin"></i> Kecamatan
                     </label>
-                    <select id="kecamatan" name="kecamatan" class="form-select @error('kecamatan') is-invalid @enderror" required>
+                    <select id="kecamatan_id" name="kecamatan_id" class="form-select @error('kecamatan_id') is-invalid @enderror" required>
                         <option value="">-- Pilih Kecamatan --</option>
                         @foreach ($kecamatan as $item)
-                            <option value="{{ $item }}" {{ old('kecamatan') == $item ? 'selected' : '' }}>
-                                {{ $item }}
+                            <option value="{{ $item->id }}" {{ old('kecamatan_id') == $item->id ? 'selected' : '' }}>
+                                {{ $item->nama }}
                             </option>
                         @endforeach
                     </select>
-                    @error('kecamatan')
+                    @error('kecamatan_id')
                         <small class="invalid-feedback d-block">{{ $message }}</small>
                     @enderror
                 </div>
@@ -126,9 +126,9 @@
                     <label for="nama_pengambil" class="form-label">
                         <i class="fas fa-user"></i> Nama Orang yang Mengambil
                     </label>
-                    <input type="text" id="nama_pengambil" name="nama_pengambil" 
-                           class="form-control @error('nama_pengambil') is-invalid @enderror" 
-                           placeholder="Masukkan nama lengkap" 
+                    <input type="text" id="nama_pengambil" name="nama_pengambil"
+                           class="form-control @error('nama_pengambil') is-invalid @enderror"
+                           placeholder="Masukkan nama lengkap"
                            value="{{ old('nama_pengambil') }}" required>
                     @error('nama_pengambil')
                         <small class="invalid-feedback d-block">{{ $message }}</small>
@@ -140,9 +140,9 @@
                     <label for="nama_tk_kb" class="form-label">
                         <i class="fas fa-school"></i> Nama TK/KB
                     </label>
-                    <input type="text" id="nama_tk_kb" name="nama_tk_kb" 
-                           class="form-control @error('nama_tk_kb') is-invalid @enderror" 
-                           placeholder="Masukkan nama TK/KB" 
+                    <input type="text" id="nama_tk_kb" name="nama_tk_kb"
+                           class="form-control @error('nama_tk_kb') is-invalid @enderror"
+                           placeholder="Masukkan nama TK/KB"
                            value="{{ old('nama_tk_kb') }}" required>
                     @error('nama_tk_kb')
                         <small class="invalid-feedback d-block">{{ $message }}</small>

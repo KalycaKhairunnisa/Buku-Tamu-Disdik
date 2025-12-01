@@ -10,20 +10,24 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user
-        User::create([
-            'name' => 'Admin Dinas Pendidikan',
-            'email' => 'admin@dinpendidikan.go.id',
-            'password' => Hash::make('admin123'),
-            'role' => 'admin',
-        ]);
+        // Create or update admin user
+        User::updateOrCreate(
+            ['email' => 'admin@dinpendidikan.go.id'],
+            [
+                'name' => 'Admin Dinas Pendidikan',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+            ]
+        );
 
-        // Create additional test users
-        User::create([
-            'name' => 'Operator Buku Tamu',
-            'email' => 'operator@dinpendidikan.go.id',
-            'password' => Hash::make('operator123'),
-            'role' => 'admin',
-        ]);
+        // Create or update operator user
+        User::updateOrCreate(
+            ['email' => 'operator@dinpendidikan.go.id'],
+            [
+                'name' => 'Operator Buku Tamu',
+                'password' => Hash::make('operator123'),
+                'role' => 'admin',
+            ]
+        );
     }
 }
