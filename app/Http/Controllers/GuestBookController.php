@@ -49,7 +49,14 @@ class GuestBookController extends Controller
             'tanda_tangan' => 'required|string',
         ]);
 
-        $data = array_merge($validated, ['user_id' => Auth::id()]);
+        // Populate legacy `kecamatan` string column for compatibility
+        $kecamatanModel = Kecamatan::find($validated['kecamatan_id']);
+        $legacyKecamatan = $kecamatanModel?->nama ?? null;
+
+        $data = array_merge($validated, [
+            'user_id' => Auth::id(),
+            'kecamatan' => $legacyKecamatan,
+        ]);
 
         GuestBook::create($data);
 
