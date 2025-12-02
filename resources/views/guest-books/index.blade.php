@@ -235,7 +235,7 @@
                             </td>
                             <td>
                                 <span class="badge badge-info">
-                                    {{ $book->kecamatan?->nama ?? '-' }}
+                                    {{ $book->getRelationValue('kecamatan')?->nama ?? $book->kecamatan ?? '-' }}
                                 </span>
                             </td>
                             <td>{{ $book->nama_pengambil }}</td>
